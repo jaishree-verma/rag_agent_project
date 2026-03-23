@@ -1,0 +1,13 @@
+.venv
+.env
+chroma_db/*
+__pycache__
+*.log
+*.egg-info
+.ruff_cache
+rag_evaluation_results.csv
+data/*.json
+data/*.txt
+data/*.pdf
+data/*.md
+/data

@@ -1,0 +1,37 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+from src.constants import BASE_DIR
+from src.utils.common import read_json, create_directories
+
+load_dotenv()
+
+
+class ConfigurationManager:
+    def __init__(self):
+        self.config = read_json(Path.joinpath(BASE_DIR, "config/config.json"))
+
+    def get_knowledge_base_config(self):
+        config = self.config["knowledge_base"]
+        create_directories([Path.joinpath(BASE_DIR, config["CHROMA_DB_DIR"])])
+        create_directories([Path.joinpath(BASE_DIR, config["RAW_DOCS_DIR"])])
+        #make ingest_manifest.json if it doesn't exist
+        
+        return config
+
+    def get_llm_config(self):
+        config = self.config["llm_config"]
+        config["GEMINI_API_KEY"] = os.getenv("GEMINI_API_KEY")
+        return config
+
+    def get_agent_config(self):
+        config = self.config["agent_config"]
+        return config
+
+
+if __name__ == "__main__":
+    config = ConfigurationManager()
+    knowledge_base_config = config.get_knowledge_base_config()
+    print(knowledge_base_config)
